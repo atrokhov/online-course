@@ -51,7 +51,7 @@ ActiveRecord::Schema.define(version: 2021_05_05_210201) do
   end
 
   create_table "categories", force: :cascade do |t|
-    t.string "name", default: ""
+    t.string "name", null: false
     t.text "description", default: ""
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -59,7 +59,7 @@ ActiveRecord::Schema.define(version: 2021_05_05_210201) do
 
   create_table "chat_visits", force: :cascade do |t|
     t.bigint "chat_id", null: false
-    t.datetime "last_visit", default: "2021-05-08 22:00:44"
+    t.datetime "last_visit", default: "2021-05-09 14:32:02"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["chat_id"], name: "index_chat_visits_on_chat_id"
@@ -169,7 +169,7 @@ ActiveRecord::Schema.define(version: 2021_05_05_210201) do
   create_table "homeworks", force: :cascade do |t|
     t.bigint "lesson_id", null: false
     t.text "text", default: ""
-    t.datetime "time_to_complete", default: "2021-05-08 22:00:41"
+    t.datetime "time_to_complete", default: "2021-05-09 14:31:59"
     t.string "type", default: "common"
     t.string "category_of_work", default: "testing"
     t.boolean "has_score", default: false

@@ -1,0 +1,26 @@
+<p id="notice"><%= notice %></p>
+<p id="alert"><%= alert %></p>
+
+<% if user_signed_in? %>
+	<p><%= current_user.username %></p>
+	<%= link_to 'Sign out', destroy_user_session_path, method: :delete %>
+<% else %>
+	<%= link_to 'Sign in', new_user_session_path %>
+	<%= link_to 'Sign up', new_user_registration_path %>
+<% end %>
+
+<h1>Categories</h1>
+<% @categories.each do |category| %>
+<div>
+	<p><%= category.name %></p>
+	<%= link_to 'Show', category %>
+	<% if user_signed_in? and current_user.is_superuser? %>
+	    | <%= link_to 'Edit', edit_category_path(category) %> |
+	    <%= link_to 'Destroy', category, method: :delete, data: { confirm: 'Are you sure?' } %>
+	<% end %>
+</div>
+<% end %>
+
+<% if user_signed_in? and current_user.is_superuser? %>
+	<p><%= link_to 'New category', new_category_path %></p>
+<% end %>
