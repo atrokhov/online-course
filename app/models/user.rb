@@ -19,4 +19,21 @@ class User < ApplicationRecord
   def is_manager?
   	!Manager.where(user: self).blank? ? true : false
   end
+
+  def has_subscription?
+    client = Client.find_by(user: self)
+    client.subscription
+  end
+
+  def rights
+    if self.is_superuser?
+      "Superuser"
+    elsif self.is_admin?
+      "Admin"
+    elsif self.is_client?
+      "Client"
+    elsif self.is_manager?
+      "Manager"
+    end
+  end
 end

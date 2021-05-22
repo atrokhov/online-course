@@ -11,10 +11,8 @@ class CategoriesController < ApplicationController
   end
 
   def new
-  	if user_signed_in? and current_user.is_superuser?
-  		@category = Category.new
-  	else
-	  	redirect_to categories_url, status: :found, alert: "You don't have enough rights"
+    check_rights do
+      @category = Category.new
 	  end
   end
 
@@ -22,7 +20,7 @@ class CategoriesController < ApplicationController
   end
 
   def create
-  	if user_signed_in? and current_user.is_superuser?
+  	check_rights do
 	  	@category = Category.new(category_params)
 
 	  	respond_to do |format|
@@ -32,8 +30,6 @@ class CategoriesController < ApplicationController
 	        format.html { render :new, status: :unprocessable_entity }
 	      end
 	    end
-	  else
-	  	redirect_to categories_url, status: :found, alert: "You don't have enough rights"
 	  end
   end
 
@@ -57,14 +53,20 @@ class CategoriesController < ApplicationController
   private
 
 	  def set_category
-	  	if user_signed_in? and current_user.is_superuser?
+	  	check_rights do
 	    	@category = Category.find(params[:id])
-	    else
-		  	redirect_to categories_url, status: :found, alert: "You don't have enough rights"
 		  end
 	  end
 
   	def category_params
       params.require(:category).permit(:name, :description)
+    end
+
+    def check_rights
+      if user_signed_in? and current_user.is_superuser?
+        yield
+      else
+        redirect_to categories_url, status: :found, alert: "You don't have enough rights"
+      end
     end
 end

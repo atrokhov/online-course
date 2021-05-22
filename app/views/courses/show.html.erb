@@ -1,0 +1,21 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Category:</strong>
+  <%= @course.category.name %>
+</p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @course.name %>
+</p>
+
+<p>
+  <strong>Description:</strong>
+  <%= @course.description %>
+</p>
+
+<% if user_signed_in? and current_user.is_superuser? %>
+	<%= link_to 'Edit', edit_course_path(@course) %> |
+<% end %>
+<%= link_to 'Back', courses_path %>

@@ -59,7 +59,7 @@ ActiveRecord::Schema.define(version: 2021_05_05_210201) do
 
   create_table "chat_visits", force: :cascade do |t|
     t.bigint "chat_id", null: false
-    t.datetime "last_visit", default: "2021-05-09 14:32:02"
+    t.datetime "last_visit", default: "2021-05-18 18:46:12"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["chat_id"], name: "index_chat_visits_on_chat_id"
@@ -169,7 +169,7 @@ ActiveRecord::Schema.define(version: 2021_05_05_210201) do
   create_table "homeworks", force: :cascade do |t|
     t.bigint "lesson_id", null: false
     t.text "text", default: ""
-    t.datetime "time_to_complete", default: "2021-05-09 14:31:59"
+    t.datetime "time_to_complete", default: "2021-05-18 18:46:09"
     t.string "type", default: "common"
     t.string "category_of_work", default: "testing"
     t.boolean "has_score", default: false
@@ -294,7 +294,9 @@ ActiveRecord::Schema.define(version: 2021_05_05_210201) do
     t.datetime "locked_at"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.string "username"
+    t.string "first_name"
+    t.string "last_name"
+    t.boolean "blocked", default: false
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true

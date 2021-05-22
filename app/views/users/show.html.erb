@@ -1,0 +1,124 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>First name:</strong>
+  <%= @user.first_name %>
+</p>
+
+<p>
+  <strong>Last name:</strong>
+  <%= @user.last_name %>
+</p>
+
+<p>
+  <strong>Email:</strong>
+  <%= @user.email %>
+</p>
+
+<p>
+  <strong>Rights:</strong>
+  <%= @user.rights %>
+</p>
+
+<% if @user.is_client? %>
+	<p>
+	  <strong>Subscription:</strong>
+	  <%= @user.has_subscription? %>
+	</p>
+<% end %>
+
+<p>
+  <strong>Created at:</strong>
+  <%= @user.created_at %>
+</p>
+
+<p>
+  <strong>Updated at:</strong>
+  <%= @user.updated_at %>
+</p>
+
+<details>
+    <summary>Sign in data</summary>
+    <p>
+	  <strong>Last sign in ip:</strong>
+	  <%= @user.last_sign_in_ip %>
+	</p>
+
+	<p>
+	  <strong>Current sign in ip:</strong>
+	  <%= @user.current_sign_in_ip %>
+	</p>
+
+	<p>
+	  <strong>Current sign in at:</strong>
+	  <%= @user.current_sign_in_at %>
+	</p>
+
+	<p>
+	  <strong>Sign in count:</strong>
+	  <%= @user.sign_in_count %>
+	</p>
+
+	<p>
+	  <strong>Remember created at:</strong>
+	  <%= @user.remember_created_at %>
+	</p>
+
+</details>
+
+
+<details>
+	<summary>Password data</summary>
+	<p>
+	  <strong>Encrypted password:</strong>
+	  <%= @user.encrypted_password %>
+	</p>
+
+	<p>
+	  <strong>Reset password token:</strong>
+	  <%= @user.reset_password_token %>
+	</p>
+
+	<p>
+	  <strong>Reset password sent at:</strong>
+	  <%= @user.reset_password_sent_at %>
+	</p>
+</details>
+
+<details>
+	<summary>Confirmation data:</summary>
+	<p>
+	  <strong>Confirmation token:</strong>
+	  <%= @user.confirmation_token %>
+	</p>
+
+	<p>
+	  <strong>Confirmed at:</strong>
+	  <%= @user.confirmed_at %>
+	</p>
+
+	<p>
+	  <strong>Confirmation sent at:</strong>
+	  <%= @user.confirmation_sent_at %>
+	</p>
+</details>
+
+<details>
+	<summary>Lock data:</summary>
+	<p>
+	  <strong>Unlock token:</strong>
+	  <%= @user.unlock_token %>
+	</p>
+
+	<p>
+	  <strong>Locked at:</strong>
+	  <%= @user.locked_at %>
+	</p>
+
+	<p>
+	  <strong>Blocked:</strong>
+	  <%= @user.blocked %>
+	</p>
+</details>
+
+<%= link_to 'Back', users_path %>
