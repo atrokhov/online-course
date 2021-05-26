@@ -43,13 +43,6 @@ ActiveRecord::Schema.define(version: 2021_05_05_210201) do
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
-  create_table "admins", force: :cascade do |t|
-    t.bigint "user_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["user_id"], name: "index_admins_on_user_id"
-  end
-
   create_table "categories", force: :cascade do |t|
     t.string "name", null: false
     t.text "description", default: ""
@@ -59,7 +52,7 @@ ActiveRecord::Schema.define(version: 2021_05_05_210201) do
 
   create_table "chat_visits", force: :cascade do |t|
     t.bigint "chat_id", null: false
-    t.datetime "last_visit", default: "2021-05-18 18:46:12"
+    t.datetime "last_visit", default: "2021-05-26 22:54:03"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["chat_id"], name: "index_chat_visits_on_chat_id"
@@ -101,14 +94,6 @@ ActiveRecord::Schema.define(version: 2021_05_05_210201) do
     t.index ["word_homework_id"], name: "index_client_word_homeworks_on_word_homework_id"
   end
 
-  create_table "clients", force: :cascade do |t|
-    t.bigint "user_id", null: false
-    t.boolean "subscription", default: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["user_id"], name: "index_clients_on_user_id"
-  end
-
   create_table "comments", force: :cascade do |t|
     t.bigint "question_id"
     t.bigint "user_id", null: false
@@ -123,9 +108,12 @@ ActiveRecord::Schema.define(version: 2021_05_05_210201) do
     t.string "name", default: ""
     t.text "description", default: ""
     t.bigint "category_id", null: false
+    t.bigint "teacher_id"
+    t.boolean "active", default: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["category_id"], name: "index_courses_on_category_id"
+    t.index ["teacher_id"], name: "index_courses_on_teacher_id"
   end
 
   create_table "done_homeworks", force: :cascade do |t|
@@ -141,22 +129,22 @@ ActiveRecord::Schema.define(version: 2021_05_05_210201) do
   end
 
   create_table "emails", force: :cascade do |t|
-    t.bigint "manager_id", null: false
+    t.bigint "user_id", null: false
     t.string "name", default: ""
     t.text "body", default: ""
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["manager_id"], name: "index_emails_on_manager_id"
+    t.index ["user_id"], name: "index_emails_on_user_id"
   end
 
   create_table "file_homeworks", force: :cascade do |t|
     t.bigint "homework_id", null: false
-    t.bigint "client_id", null: false
+    t.bigint "user_id", null: false
     t.string "files", default: ""
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["client_id"], name: "index_file_homeworks_on_client_id"
     t.index ["homework_id"], name: "index_file_homeworks_on_homework_id"
+    t.index ["user_id"], name: "index_file_homeworks_on_user_id"
   end
 
   create_table "homework_testings", force: :cascade do |t|
@@ -169,7 +157,7 @@ ActiveRecord::Schema.define(version: 2021_05_05_210201) do
   create_table "homeworks", force: :cascade do |t|
     t.bigint "lesson_id", null: false
     t.text "text", default: ""
-    t.datetime "time_to_complete", default: "2021-05-18 18:46:09"
+    t.datetime "time_to_complete", default: "2021-05-26 22:53:59"
     t.string "type", default: "common"
     t.string "category_of_work", default: "testing"
     t.boolean "has_score", default: false
@@ -191,13 +179,6 @@ ActiveRecord::Schema.define(version: 2021_05_05_210201) do
     t.index ["course_id"], name: "index_lessons_on_course_id"
   end
 
-  create_table "managers", force: :cascade do |t|
-    t.bigint "user_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["user_id"], name: "index_managers_on_user_id"
-  end
-
   create_table "messages", force: :cascade do |t|
     t.bigint "sender_id", null: false
     t.bigint "chat_id", null: false
@@ -211,13 +192,13 @@ ActiveRecord::Schema.define(version: 2021_05_05_210201) do
 
   create_table "paid_lessons", force: :cascade do |t|
     t.bigint "check_id", null: false
-    t.bigint "client_id", null: false
+    t.bigint "user_id", null: false
     t.bigint "lesson_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["check_id"], name: "index_paid_lessons_on_check_id"
-    t.index ["client_id"], name: "index_paid_lessons_on_client_id"
     t.index ["lesson_id"], name: "index_paid_lessons_on_lesson_id"
+    t.index ["user_id"], name: "index_paid_lessons_on_user_id"
   end
 
   create_table "questions", force: :cascade do |t|
@@ -229,22 +210,6 @@ ActiveRecord::Schema.define(version: 2021_05_05_210201) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["lesson_id"], name: "index_questions_on_lesson_id"
     t.index ["user_id"], name: "index_questions_on_user_id"
-  end
-
-  create_table "superusers", force: :cascade do |t|
-    t.bigint "user_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["user_id"], name: "index_superusers_on_user_id"
-  end
-
-  create_table "teachers", force: :cascade do |t|
-    t.bigint "course_id", null: false
-    t.bigint "user_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["course_id"], name: "index_teachers_on_course_id"
-    t.index ["user_id"], name: "index_teachers_on_user_id"
   end
 
   create_table "testing_questions", force: :cascade do |t|
@@ -297,6 +262,12 @@ ActiveRecord::Schema.define(version: 2021_05_05_210201) do
     t.string "first_name"
     t.string "last_name"
     t.boolean "blocked", default: false
+    t.boolean "admin", default: false
+    t.boolean "client", default: true
+    t.boolean "teacher", default: false
+    t.boolean "superuser", default: false
+    t.boolean "manager", default: false
+    t.boolean "subscription", default: false
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
@@ -312,7 +283,6 @@ ActiveRecord::Schema.define(version: 2021_05_05_210201) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
-  add_foreign_key "admins", "users"
   add_foreign_key "chat_visits", "chats"
   add_foreign_key "chats", "users", column: "first_interlocutor_id"
   add_foreign_key "chats", "users", column: "second_interlocutor_id"
@@ -320,30 +290,26 @@ ActiveRecord::Schema.define(version: 2021_05_05_210201) do
   add_foreign_key "client_testing_homeworks", "homeworks"
   add_foreign_key "client_word_homeworks", "homeworks"
   add_foreign_key "client_word_homeworks", "word_homeworks"
-  add_foreign_key "clients", "users"
   add_foreign_key "comments", "questions"
   add_foreign_key "comments", "users"
   add_foreign_key "courses", "categories"
-  add_foreign_key "done_homeworks", "clients"
+  add_foreign_key "courses", "users", column: "teacher_id"
   add_foreign_key "done_homeworks", "homeworks"
-  add_foreign_key "done_homeworks", "teachers"
-  add_foreign_key "emails", "managers"
-  add_foreign_key "file_homeworks", "clients"
+  add_foreign_key "done_homeworks", "users", column: "client_id"
+  add_foreign_key "done_homeworks", "users", column: "teacher_id"
+  add_foreign_key "emails", "users"
   add_foreign_key "file_homeworks", "homeworks"
+  add_foreign_key "file_homeworks", "users"
   add_foreign_key "homework_testings", "homeworks"
   add_foreign_key "homeworks", "lessons"
   add_foreign_key "lessons", "courses"
-  add_foreign_key "managers", "users"
   add_foreign_key "messages", "chats"
   add_foreign_key "messages", "users", column: "sender_id"
   add_foreign_key "paid_lessons", "checks"
-  add_foreign_key "paid_lessons", "clients"
   add_foreign_key "paid_lessons", "lessons"
+  add_foreign_key "paid_lessons", "users"
   add_foreign_key "questions", "lessons"
   add_foreign_key "questions", "users"
-  add_foreign_key "superusers", "users"
-  add_foreign_key "teachers", "courses"
-  add_foreign_key "teachers", "users"
   add_foreign_key "testing_questions", "homework_testings"
   add_foreign_key "tests_for_codes", "homeworks"
   add_foreign_key "text_of_word_homeworks", "word_homeworks"

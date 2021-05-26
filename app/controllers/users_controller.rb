@@ -62,7 +62,7 @@ class UsersController < ApplicationController
     end
 
   	def user_params
-      params.require(:user).permit(:first_name, :last_name, :email)
+      params.require(:user).permit(:first_name, :last_name, :email, :subscription, :blocked, :client, :admin, :superuser, :manager, :teacher)
     end
 
     def check_superuser_rights

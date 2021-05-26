@@ -15,6 +15,11 @@
   <%= @course.description %>
 </p>
 
+<p>
+  <strong>Teacher:</strong>
+  <%= User.find(@course.teacher_id).full_name %>
+</p>
+
 <% if user_signed_in? and current_user.is_superuser? %>
 	<%= link_to 'Edit', edit_course_path(@course) %> |
 <% end %>

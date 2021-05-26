@@ -59,7 +59,7 @@ class CoursesController < ApplicationController
 	  end
 
   	def courses_params
-      params.require(:course).permit(:category_id, :name, :description)
+      params.require(:course).permit(:category_id, :name, :description, :active, :teacher_id)
     end
 
     def check_rights

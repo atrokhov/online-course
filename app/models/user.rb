@@ -4,25 +4,32 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
+  def full_name
+    "#{self.first_name} #{self.last_name}"
+  end
+
   def is_superuser?
-  	!Superuser.where(user: self).blank? ? true : false
+  	self.superuser
   end
 
   def is_admin?
-  	!Admin.where(user: self).blank? ? true : false
+  	self.admin
   end
 
   def is_client?
-  	!Client.where(user: self).blank? ? true : false
+  	self.client
   end
 
   def is_manager?
-  	!Manager.where(user: self).blank? ? true : false
+  	self.manager
+  end
+
+  def is_teacher?
+    self.teacher
   end
 
   def has_subscription?
-    client = Client.find_by(user: self)
-    client.subscription
+    self.subscription
   end
 
   def rights

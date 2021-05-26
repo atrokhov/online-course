@@ -31,6 +31,11 @@
     <%= f.password_field :current_password, autocomplete: "current-password" %>
   </div>
 
+  <div class="field">
+    <%= f.label :subscription %><br />
+    <%= f.check_box :subscription %>
+  </div>
+  
   <div class="actions">
     <%= f.submit "Update" %>
   </div>
