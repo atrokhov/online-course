@@ -63,7 +63,7 @@ class CategoriesController < ApplicationController
     end
 
     def check_rights
-      if user_signed_in? and current_user.is_superuser?
+      if user_signed_in? and current_user.superuser?
         yield
       else
         redirect_to categories_url, status: :found, alert: "You don't have enough rights"

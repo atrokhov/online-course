@@ -1,10 +1,45 @@
-<%= form_with(model: course) do |form| %>
-  <% if course.errors.any? %>
+<p>
+  <strong>First name:</strong>
+  <%= @user.first_name %>
+</p>
+
+<p>
+  <strong>Last name:</strong>
+  <%= @user.last_name %>
+</p>
+
+<p>
+  <strong>Email:</strong>
+  <%= @user.email %>
+</p>
+
+<p>
+  <strong>Rights:</strong>
+  <%= @user.rights %>
+</p>
+
+<p>
+  <strong>Subscription:</strong>
+  <%= @user.has_subscription? %>
+</p>
+
+<p>
+  <strong>Created at:</strong>
+  <%= @user.created_at %>
+</p>
+
+<p>
+  <strong>Updated at:</strong>
+  <%= @user.updated_at %>
+</p>
+
+<%= form_with(model: @user) do |form| %>
+  <% if @user.errors.any? %>
     <div id="error_explanation">
-      <h2><%= pluralize(course.errors.count, "error") %> prohibited this course from being saved:</h2>
+      <h2><%= pluralize(@user.errors.count, "error") %> prohibited this @user from being saved:</h2>
 
       <ul>
-        <% course.errors.each do |error| %>
+        <% @user.errors.each do |error| %>
           <li><%= error.full_message %></li>
         <% end %>
       </ul>
@@ -12,18 +47,20 @@
   <% end %>
 
   <div class="field">
-    <%= form.label :category %><br />
-    <%= form.select :category_id, options_for_select(Category.all.map{|s|[s.name, s.id]}) %>
-  </div>
+    <%= form.label :role, 'Admin', value: :admin  %>
+    <%= form.radio_button :role, :admin %>
 
-  <div class="field">
-    <%= form.label :name %>
-    <%= form.text_field :name %>
-  </div>
+    <%= form.label :role, 'Client', value: :client  %>
+    <%= form.radio_button :role, :client %>
 
-  <div class="field">
-    <%= form.label :description %>
-    <%= form.text_area :description %>
+    <%= form.label :role, 'Manager', value: :manager  %>
+    <%= form.radio_button :role, :manager %>
+
+    <%= form.label :role, 'Superuser', value: :superuser  %>
+    <%= form.radio_button :role, :superuser %>
+
+    <%= form.label :role, 'Teacher', value: :teacher  %>
+    <%= form.radio_button :role, :teacher %>
   </div>
 
   <div class="actions">

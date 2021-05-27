@@ -4,28 +4,10 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
+  enum role: [:admin, :client, :manager, :superuser, :teacher]
+
   def full_name
     "#{self.first_name} #{self.last_name}"
-  end
-
-  def is_superuser?
-  	self.superuser
-  end
-
-  def is_admin?
-  	self.admin
-  end
-
-  def is_client?
-  	self.client
-  end
-
-  def is_manager?
-  	self.manager
-  end
-
-  def is_teacher?
-    self.teacher
   end
 
   def has_subscription?
@@ -33,14 +15,16 @@ class User < ApplicationRecord
   end
 
   def rights
-    if self.is_superuser?
+    if self.superuser?
       "Superuser"
-    elsif self.is_admin?
+    elsif self.admin?
       "Admin"
-    elsif self.is_client?
+    elsif self.client?
       "Client"
-    elsif self.is_manager?
+    elsif self.manager?
       "Manager"
+    elsif self.teacher?
+      "Teacher"
     end
   end
 end

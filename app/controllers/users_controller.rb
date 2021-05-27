@@ -1,44 +1,37 @@
 class UsersController < ApplicationController
-  before_action :set_user, only: %i[ edit update destroy ]
+  before_action :set_user, only: %i[ show edit block unblock update destroy ]
   
   def index
   	check_superuser_rights do
-      @users = User.all
+      @users = User.all.order :id
 	  end
   end
 
   def show
-  	check_superuser_rights do
-      @user = User.find(params[:id])
-	  end
-  end
-
-  def new
-    check_superuser_rights do
-      @user = User.new
-    end
   end
 
   def edit
   end
 
-  def create
-    check_superuser_rights do
-      @user = User.new(users_params)
+  def block
+    @user.blocked = true
+    @user.save
+    respond_to do |format|
+      format.html { redirect_to users_url, notice: "User was successfully blocked." }
+    end
+  end
 
-      respond_to do |format|
-        if @user.save
-          format.html { redirect_to @user, notice: "User was successfully created." }
-        else
-          format.html { render :new, status: :unprocessable_entity }
-        end
-      end
+  def unblock
+    @user.blocked = false
+    @user.save
+    respond_to do |format|
+      format.html { redirect_to users_url, notice: "User was successfully unblocked." }
     end
   end
 
   def update
     respond_to do |format|
-      if @user.update(users_params)
+      if @user.update(user_params)
         format.html { redirect_to @user, notice: "User was successfully updated." }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -62,11 +55,11 @@ class UsersController < ApplicationController
     end
 
   	def user_params
-      params.require(:user).permit(:first_name, :last_name, :email, :subscription, :blocked, :client, :admin, :superuser, :manager, :teacher)
+      params.require(:user).permit(:first_name, :last_name, :email, :subscription, :blocked, :role)
     end
 
     def check_superuser_rights
-      if user_signed_in? and current_user.is_superuser?
+      if user_signed_in? and current_user.superuser?
         yield
       else
         redirect_to categories_url, status: :found, alert: "You don't have enough rights"

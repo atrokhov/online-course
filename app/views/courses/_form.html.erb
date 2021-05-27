@@ -28,7 +28,7 @@
 
   <div class="field">
     <%= form.label :teacher %>
-    <%= form.select :teacher_id, options_for_select(User.where(teacher: true).map{|s|[s.full_name, s.id]}) %>
+    <%= form.select :teacher_id, options_for_select(User.where(role: :teacher).map{|s|[s.full_name, s.id]}) %>
   </div>
 
   <div class="actions">

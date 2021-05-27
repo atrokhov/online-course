@@ -3,13 +3,13 @@
 <div>
 	<p><%= course.name %></p>
 	<%= link_to 'Show', course %>
-	<% if user_signed_in? and current_user.is_superuser? %>
+	<% if user_signed_in? and current_user.superuser? %>
 	    | <%= link_to 'Edit', edit_course_path(course) %> |
 	    <%= link_to 'Destroy', course, method: :delete, data: { confirm: 'Are you sure?' } %>
 	<% end %>
 </div>
 <% end %>
 
-<% if user_signed_in? and current_user.is_superuser? %>
+<% if user_signed_in? and current_user.superuser? %>
 	<p><%= link_to 'New course', new_course_path %></p>
 <% end %>

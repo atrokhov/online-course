@@ -20,7 +20,7 @@
   <%= @user.rights %>
 </p>
 
-<% if @user.is_client? %>
+<% if @user.client? %>
 	<p>
 	  <strong>Subscription:</strong>
 	  <%= @user.has_subscription? %>
