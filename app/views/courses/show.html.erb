@@ -1,5 +1,3 @@
-<p id="notice"><%= notice %></p>
-
 <p>
   <strong>Category:</strong>
   <%= @course.category.name %>
@@ -18,6 +16,19 @@
 <p>
   <strong>Teacher:</strong>
   <%= User.find(@course.teacher_id).full_name %>
+</p>
+
+<p>
+  <strong>Active:</strong>
+  <%= @course.active %>
+
+  <% if user_signed_in? and (current_user.superuser? or @course.teacher_id == current_user.id) %>
+	<% if !@course.active %>
+		<%= link_to 'Activate', activate_course_path(@course), method: :patch, data: { confirm: 'Are you sure you want to activate course?' } %>
+	<% elsif @course.active %>
+		<%= link_to 'Deactivate', deactivate_course_path(@course), method: :patch, data: { confirm: 'Are you sure you want to deactivate course?' } %>
+	<% end %>
+<% end %>
 </p>
 
 <% if user_signed_in? and current_user.superuser? %>

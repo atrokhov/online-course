@@ -1,0 +1,19 @@
+<h1>Lessons</h1>
+<% if !@lessons.empty? %>
+	<% @lessons.each do |lesson| %>
+	<div>
+		<p><%= lesson.name %></p>
+		<%= link_to 'Show', lesson %>
+		<% if user_signed_in? and current_user.superuser? %>
+		    | <%= link_to 'Edit', edit_lesson_path(lesson) %> |
+		    <%= link_to 'Destroy', lesson, method: :delete, data: { confirm: 'Are you sure?' } %>
+		<% end %>
+	</div>
+	<% end %>
+<% else %>
+	<p>Doesn't anything here</p>
+<% end %>
+
+<% if user_signed_in? and current_user.superuser? %>
+	<p><%= link_to 'New lesson', new_lesson_path %></p>
+<% end %>

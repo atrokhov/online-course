@@ -3,7 +3,19 @@ class CoursesController < ApplicationController
 	before_action :authenticate_user!, except: %i[ index show ]
 
   def index
-  	@courses = Course.all
+    if user_signed_in? and current_user.superuser?
+  	  @courses = Course.all
+    else
+      @courses = Course.where(active: true)
+    end
+  end
+
+  def teacher_courses
+    if current_user.teacher?
+      @courses = Course.where(teacher_id: current_user.id)
+    else
+      redirect_to courses_url, status: :found, alert: "You are not a teacher"
+    end
   end
 
   def show
@@ -47,6 +59,36 @@ class CoursesController < ApplicationController
     @course.destroy
     respond_to do |format|
       format.html { redirect_to courses_url, notice: "Course was successfully destroyed." }
+    end
+  end
+
+  def activate
+    if user_signed_in? and (current_user.superuser? or current_user.teacher?)
+      @course = Course.find(params[:id])
+      if @course.teacher_id == current_user.id or current_user.superuser?
+        @course.active = true
+        @course.save
+        respond_to do |format|
+          format.html { redirect_to @course, notice: "Course was successfully activated." }
+        end
+      else
+        redirect_to courses_url, status: :found, alert: "You don't have enough rights"
+      end
+    end
+  end
+
+  def deactivate
+    if user_signed_in? and (current_user.superuser? or current_user.teacher?)
+      @course = Course.find(params[:id])
+      if @course.teacher_id == current_user.id or current_user.superuser?
+        @course.active = false
+        @course.save
+        respond_to do |format|
+          format.html { redirect_to @course, notice: "Course was successfully deactivated." }
+        end
+      else
+        redirect_to courses_url, status: :found, alert: "You don't have enough rights"
+      end
     end
   end
 

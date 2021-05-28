@@ -1,0 +1,42 @@
+<p>
+  <strong>Course:</strong>
+  <%= @lesson.course.name %>
+</p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @lesson.name %>
+</p>
+
+<p>
+  <strong>Free:</strong>
+  <%= @lesson.free %>
+</p>
+
+<p>
+  <strong>Text:</strong>
+  <%= @lesson.text %>
+</p>
+
+<p>
+  <strong>Price:</strong>
+  <%= @lesson.price %>
+</p>
+
+<p>
+  <strong>Active:</strong>
+  <%= @lesson.active %>
+
+  <% if user_signed_in? and (current_user.superuser? or @lesson.teacher_id == current_user.id) %>
+	<% if !@lesson.active %>
+		<%= link_to 'Activate', activate_lesson_path(@lesson), method: :patch, data: { confirm: 'Are you sure you want to activate lesson?' } %>
+	<% elsif @lesson.active %>
+		<%= link_to 'Deactivate', deactivate_lesson_path(@lesson), method: :patch, data: { confirm: 'Are you sure you want to deactivate lesson?' } %>
+	<% end %>
+<% end %>
+</p>
+
+<% if user_signed_in? and current_user.superuser? %>
+	<%= link_to 'Edit', edit_lesson_path(@lesson) %> |
+<% end %>
+<%= link_to 'Back', lessons_path %>
