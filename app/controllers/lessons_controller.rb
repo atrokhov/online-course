@@ -2,7 +2,11 @@ class LessonsController < ApplicationController
 	before_action :set_lesson, only: %i[ show edit update destroy ]
 
   def index
-  	@lessons = Lesson.where active: true
+  	if check_superuser_rights
+  		@lessons = Lesson.all
+  	else
+  		@lessons = Lesson.where active: true
+  	end
   end
 
   def show
@@ -32,13 +36,11 @@ class LessonsController < ApplicationController
   private
 
   	def set_lesson
-      check_superuser_rights do
-        lesson = Lesson.find(params[:id])
-        if check_active(lesson)
-        	@lesson = lesson
-        else
-        	redirect_to lessons_url, status: :found
-        end
+      lesson = Lesson.find(params[:id])
+      if check_active(lesson) or check_superuser_rights or check_teacher_rights and lesson.course.user_id == current_user.id
+      	@lesson = lesson
+      else
+      	redirect_to lessons_url, status: :found
       end
     end
 
@@ -51,10 +53,10 @@ class LessonsController < ApplicationController
     end
 
     def check_superuser_rights
-      if user_signed_in? and current_user.superuser?
-        yield
-      else
-        redirect_to lessons_url, status: :found, alert: "You don't have enough rights"
-      end
+      user_signed_in? and current_user.superuser? ? true : false
+    end
+
+    def check_teacher_rights
+    	user_signed_in? and current_user.teacher? ? true : false
     end
 end
