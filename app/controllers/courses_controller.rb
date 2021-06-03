@@ -4,9 +4,9 @@ class CoursesController < ApplicationController
 
   def index
     if user_signed_in? and current_user.superuser?
-  	  @courses = Course.all
+  	  @courses = Category.find(params[:category_id]).courses
     else
-      @courses = Course.where(active: true)
+      @courses = Category.find(params[:category_id]).courses.where(active: true)
     end
   end
 
@@ -19,12 +19,12 @@ class CoursesController < ApplicationController
   end
 
   def show
-  	@course = Course.find(params[:id])
+  	@course = Category.find(params[:category_id]).courses.find(params[:id])
   end
 
   def new
   	check_rights do
-  		@course = Course.new
+  		@course = Category.find(params[:category_id]).courses.build
 	  end
   end
 
@@ -33,11 +33,11 @@ class CoursesController < ApplicationController
 
   def create
   	check_rights do
-	  	@course = Course.new(courses_params)
+	  	@course = Category.find(params[:category_id]).courses.build(courses_params)
 
 	  	respond_to do |format|
 	      if @course.save
-	        format.html { redirect_to @course, notice: "Course was successfully created." }
+	        format.html { redirect_to category_course_path(@course.category_id, @course), notice: "Course was successfully created." }
 	      else
 	        format.html { render :new, status: :unprocessable_entity }
 	      end
@@ -48,7 +48,7 @@ class CoursesController < ApplicationController
   def update
   	respond_to do |format|
       if @course.update(courses_params)
-        format.html { redirect_to @course, notice: "Course was successfully updated." }
+        format.html { redirect_to category_course_path(@course.category_id, @course), notice: "Course was successfully updated." }
       else
         format.html { render :edit, status: :unprocessable_entity }
       end
@@ -58,18 +58,18 @@ class CoursesController < ApplicationController
   def destroy
     @course.destroy
     respond_to do |format|
-      format.html { redirect_to courses_url, notice: "Course was successfully destroyed." }
+      format.html { redirect_to category_courses_url, notice: "Course was successfully destroyed." }
     end
   end
 
   def activate
     if user_signed_in? and (current_user.superuser? or current_user.teacher?)
-      @course = Course.find(params[:id])
+      @course = Category.find(params[:category_id]).courses.find(params[:id])
       if @course.teacher_id == current_user.id or current_user.superuser?
         @course.active = true
         @course.save
         respond_to do |format|
-          format.html { redirect_to @course, notice: "Course was successfully activated." }
+          format.html { redirect_to category_course_path(@course.category_id, @course), notice: "Course was successfully activated." }
         end
       else
         redirect_to courses_url, status: :found, alert: "You don't have enough rights"
@@ -79,12 +79,12 @@ class CoursesController < ApplicationController
 
   def deactivate
     if user_signed_in? and (current_user.superuser? or current_user.teacher?)
-      @course = Course.find(params[:id])
+      @course = Category.find(params[:category_id]).courses.find(params[:id])
       if @course.teacher_id == current_user.id or current_user.superuser?
         @course.active = false
         @course.save
         respond_to do |format|
-          format.html { redirect_to @course, notice: "Course was successfully deactivated." }
+          format.html { redirect_to category_course_path(@course.category_id, @course), notice: "Course was successfully deactivated." }
         end
       else
         redirect_to courses_url, status: :found, alert: "You don't have enough rights"
@@ -96,7 +96,7 @@ class CoursesController < ApplicationController
 
 	  def set_course
 	  	check_rights do
-	    	@course = Course.find(params[:id])
+	    	@course = Category.find(params[:category_id]).courses.find(params[:id])
 		  end
 	  end
 

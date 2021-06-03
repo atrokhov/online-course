@@ -20,9 +20,12 @@ manager2 = User.create(first_name: "Manager", last_name: "User 2", email: "manag
 admin1 = User.create(first_name: "Admin", last_name: "User 1", email: "admin1@course.kg", role: 0, password: "123456789", password_confirmation: "123456789")
 admin2 = User.create(first_name: "Admin", last_name: "User 2", email: "admin2@course.kg", role: 0, password: "123456789", password_confirmation: "123456789")
 
-category = Category.create(name: "Test")
-course1 = Course.create(name: "Test course 1", category: category, active: true)
-course2 = Course.create(name: "Test course 2", category: category)
+category1 = Category.create(name: "Test 1")
+category2 = Category.create(name: "Test 2")
+course1 = Course.create(name: "Test course 1", category: category1, active: true)
+course2 = Course.create(name: "Test course 2", category: category1)
+course3 = Course.create(name: "Test course 3", category: category2, active: true)
+course4 = Course.create(name: "Test course 4", category: category2)
 
 lesson1 = Lesson.create(course: course1, name: "Lesson 1", active: true)
 lesson2 = Lesson.create(course: course1, name: "Lesson 2")

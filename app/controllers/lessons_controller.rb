@@ -3,9 +3,9 @@ class LessonsController < ApplicationController
 
   def index
   	if check_superuser_rights
-  		@lessons = Lesson.all
+  		@lessons = Course.find(params[:course_id]).lessons
   	else
-  		@lessons = Lesson.where active: true
+  		@lessons = Course.find(params[:course_id]).lessons.where active: true
   	end
   end
 
@@ -36,11 +36,11 @@ class LessonsController < ApplicationController
   private
 
   	def set_lesson
-      lesson = Lesson.find(params[:id])
-      if check_active(lesson) or check_superuser_rights or check_teacher_rights and lesson.course.user_id == current_user.id
+      lesson = Course.find(params[:course_id]).lessons.find(params[:id])
+      if check_active(lesson) or check_superuser_rights or (check_teacher_rights and lesson.course.teacher_id == current_user.id)
       	@lesson = lesson
       else
-      	redirect_to lessons_url, status: :found
+      	redirect_to category_course_lessons_url, status: :found
       end
     end
 

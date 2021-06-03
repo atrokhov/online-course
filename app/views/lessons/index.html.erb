@@ -3,10 +3,10 @@
 	<% @lessons.each do |lesson| %>
 	<div>
 		<p><%= lesson.name %></p>
-		<%= link_to 'Show', lesson %>
+		<%= link_to 'Show', category_course_lesson_path(lesson.course.category_id, lesson.course_id, lesson) %>
 		<% if user_signed_in? and current_user.superuser? %>
-		    | <%= link_to 'Edit', edit_lesson_path(lesson) %> |
-		    <%= link_to 'Destroy', lesson, method: :delete, data: { confirm: 'Are you sure?' } %>
+		    | <%= link_to 'Edit', edit_category_course_lesson_path(lesson.course.category_id, lesson.course_id, lesson) %> |
+		    <%= link_to 'Destroy', category_course_lesson_path(lesson.course.category_id, lesson.course_id, lesson), method: :delete, data: { confirm: 'Are you sure?' } %>
 		<% end %>
 	</div>
 	<% end %>
@@ -15,5 +15,5 @@
 <% end %>
 
 <% if user_signed_in? and current_user.superuser? %>
-	<p><%= link_to 'New lesson', new_lesson_path %></p>
+	<p><%= link_to 'New lesson', new_category_course_lesson_path %></p>
 <% end %>

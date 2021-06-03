@@ -24,14 +24,14 @@
 
   <% if user_signed_in? and (current_user.superuser? or @course.teacher_id == current_user.id) %>
 	<% if !@course.active %>
-		<%= link_to 'Activate', activate_course_path(@course), method: :patch, data: { confirm: 'Are you sure you want to activate course?' } %>
+		<%= link_to 'Activate', category_activate_course_path(@course.category_id, @course), method: :patch, data: { confirm: 'Are you sure you want to activate course?' } %>
 	<% elsif @course.active %>
-		<%= link_to 'Deactivate', deactivate_course_path(@course), method: :patch, data: { confirm: 'Are you sure you want to deactivate course?' } %>
+		<%= link_to 'Deactivate', category_deactivate_course_path(@course.category_id, @course), method: :patch, data: { confirm: 'Are you sure you want to deactivate course?' } %>
 	<% end %>
 <% end %>
 </p>
 
 <% if user_signed_in? and current_user.superuser? %>
-	<%= link_to 'Edit', edit_course_path(@course) %> |
+	<%= link_to 'Edit', edit_category_course_path(@course.category_id, @course) %> |
 <% end %>
-<%= link_to 'Back', courses_path %>
+<%= link_to 'Back', category_courses_path %>
