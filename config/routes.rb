@@ -5,11 +5,9 @@ Rails.application.routes.draw do
   	resources :courses do
   		resources :lessons
   		patch 'lessons/:id/activate', to: 'lessons#activate', as: 'activate_lesson'
-  		patch 'lessons/:id/deactivate', to: 'lessons#deactivate', as: 'deactivate_lesson'
   	end
 
   	patch 'courses/:id/activate', to: 'courses#activate', as: 'activate_course'
-  	patch 'courses/:id/deactivate', to: 'courses#deactivate', as: 'deactivate_course'
   end
 
   get 'teacher_courses/', to: 'courses#teacher_courses', as: 'teacher_courses'

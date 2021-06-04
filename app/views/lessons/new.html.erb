@@ -1,2 +1,5 @@
-<h1>Lessons#new</h1>
-<p>Find me in app/views/lessons/new.html.erb</p>
+<h1>New Lesson</h1>
+
+<%= render 'form', lesson: @lesson %>
+
+<%= link_to 'Back', category_course_lessons_path %>

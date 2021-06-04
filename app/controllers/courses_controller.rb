@@ -64,27 +64,12 @@ class CoursesController < ApplicationController
 
   def activate
     if user_signed_in? and (current_user.superuser? or current_user.teacher?)
-      @course = Category.find(params[:category_id]).courses.find(params[:id])
-      if @course.teacher_id == current_user.id or current_user.superuser?
-        @course.active = true
-        @course.save
+      course = Category.find(params[:category_id]).courses.find(params[:id])
+      if course.teacher_id == current_user.id or current_user.superuser?
+        course.active == true ? course.active = false : course.active = true
+        course.save
         respond_to do |format|
-          format.html { redirect_to category_course_path(@course.category_id, @course), notice: "Course was successfully activated." }
-        end
-      else
-        redirect_to courses_url, status: :found, alert: "You don't have enough rights"
-      end
-    end
-  end
-
-  def deactivate
-    if user_signed_in? and (current_user.superuser? or current_user.teacher?)
-      @course = Category.find(params[:category_id]).courses.find(params[:id])
-      if @course.teacher_id == current_user.id or current_user.superuser?
-        @course.active = false
-        @course.save
-        respond_to do |format|
-          format.html { redirect_to category_course_path(@course.category_id, @course), notice: "Course was successfully deactivated." }
+          format.html { redirect_to category_course_path(course.category_id, course), notice: "Course was successfully activated." }
         end
       else
         redirect_to courses_url, status: :found, alert: "You don't have enough rights"

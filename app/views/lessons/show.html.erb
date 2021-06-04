@@ -31,7 +31,7 @@
 	<% if !@lesson.active %>
 		<%= link_to 'Activate', category_course_activate_lesson_path(@lesson), method: :patch, data: { confirm: 'Are you sure you want to activate lesson?' } %>
 	<% elsif @lesson.active %>
-		<%= link_to 'Deactivate', category_course_deactivate_lesson_path(@lesson), method: :patch, data: { confirm: 'Are you sure you want to deactivate lesson?' } %>
+		<%= link_to 'Deactivate', category_course_activate_lesson_path(@lesson), method: :patch, data: { confirm: 'Are you sure you want to deactivate lesson?' } %>
 	<% end %>
 <% end %>
 </p>

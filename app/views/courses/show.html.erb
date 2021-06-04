@@ -26,7 +26,7 @@
 	<% if !@course.active %>
 		<%= link_to 'Activate', category_activate_course_path(@course.category_id, @course), method: :patch, data: { confirm: 'Are you sure you want to activate course?' } %>
 	<% elsif @course.active %>
-		<%= link_to 'Deactivate', category_deactivate_course_path(@course.category_id, @course), method: :patch, data: { confirm: 'Are you sure you want to deactivate course?' } %>
+		<%= link_to 'Deactivate', category_activate_course_path(@course.category_id, @course), method: :patch, data: { confirm: 'Are you sure you want to deactivate course?' } %>
 	<% end %>
 <% end %>
 </p>
