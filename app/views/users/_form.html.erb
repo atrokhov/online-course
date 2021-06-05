@@ -47,20 +47,8 @@
   <% end %>
 
   <div class="field">
-    <%= form.label :role, 'Admin', value: :admin  %>
-    <%= form.radio_button :role, :admin %>
-
-    <%= form.label :role, 'Client', value: :client  %>
-    <%= form.radio_button :role, :client %>
-
-    <%= form.label :role, 'Manager', value: :manager  %>
-    <%= form.radio_button :role, :manager %>
-
-    <%= form.label :role, 'Superuser', value: :superuser  %>
-    <%= form.radio_button :role, :superuser %>
-
-    <%= form.label :role, 'Teacher', value: :teacher  %>
-    <%= form.radio_button :role, :teacher %>
+    <%= form.label :role %>
+    <%= form.select :role, User.roles.keys.map { |w| [w.humanize, w] } %>
   </div>
 
   <div class="actions">
