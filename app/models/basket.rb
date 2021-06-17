@@ -1,4 +1,4 @@
 class Basket < ApplicationRecord
   belongs_to :user
-  has_many :lessons
+  has_many :orders
 end

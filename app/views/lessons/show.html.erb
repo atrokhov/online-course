@@ -27,7 +27,7 @@
   <strong>Active:</strong>
   <%= @lesson.active %>
 
-  <% if user_signed_in? and (current_user.superuser? or @lesson.teacher_id == current_user.id) %>
+  <% if user_signed_in? and (current_user.superuser? or @lesson.course.teacher_id == current_user.id) %>
 	<% if !@lesson.active %>
 		<%= link_to 'Activate', category_course_activate_lesson_path(@lesson), method: :patch, data: { confirm: 'Are you sure you want to activate lesson?' } %>
 	<% elsif @lesson.active %>
@@ -35,6 +35,8 @@
 	<% end %>
 <% end %>
 </p>
+
+<%= link_to 'Add to cart', category_course_add_to_basket_path(@lesson), method: :patch %>
 
 <% if user_signed_in? and current_user.superuser? %>
 	<%= link_to 'Edit', edit_category_course_lesson_path(@lesson.course.category_id, @lesson.course_id, @lesson) %> |

@@ -1,0 +1,25 @@
+<h1>Cart</h1>
+
+<% if !@orders.empty? %>
+	<table>
+		<thead>
+			<tr>
+				<th>Lesson</th>
+				<th>Price</th>
+			</tr>
+		</thead>
+		<tbody>
+			<% @orders.each do |order| %>
+			<tr class="line">
+				<td><%= order.lesson.name %></td>
+				<td><%= order.lesson.price %></td>
+			</tr>
+			<% end %>
+			<tr></tr>
+		</tbody>
+		<p>Total: <%= @total %></p>
+	</table>
+
+<% else %>
+	<p>Doesn't anything here</p>
+<% end %>

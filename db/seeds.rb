@@ -22,15 +22,17 @@ admin2 = User.create(first_name: "Admin", last_name: "User 2", email: "admin2@co
 
 category1 = Category.create(name: "Test 1")
 category2 = Category.create(name: "Test 2")
-course1 = Course.create(name: "Test course 1", category: category1, active: true)
-course2 = Course.create(name: "Test course 2", category: category1)
-course3 = Course.create(name: "Test course 3", category: category2, active: true)
-course4 = Course.create(name: "Test course 4", category: category2)
+course1 = Course.create(name: "Test course 1", category: category1, active: true, teacher_id: teacher1.id)
+course2 = Course.create(name: "Test course 2", category: category1, teacher_id: teacher1.id)
+course3 = Course.create(name: "Test course 3", category: category2, active: true, teacher_id: teacher1.id)
+course4 = Course.create(name: "Test course 4", category: category2, teacher_id: teacher2.id)
 
 lesson1 = Lesson.create(course: course1, name: "Lesson 1", active: true)
 lesson2 = Lesson.create(course: course1, name: "Lesson 2")
-lesson3 = Lesson.create(course: course2, name: "Lesson 3")
+lesson3 = Lesson.create(course: course3, name: "Lesson 3", active: true)
 
 check = Check.create()
+
+basket = Basket.create(user: client1)
 
 paid_lesson = PaidLesson.create(check: check, user_id: client1.id, lesson: lesson1)

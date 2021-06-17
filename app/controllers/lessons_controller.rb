@@ -62,6 +62,17 @@ class LessonsController < ApplicationController
     end
   end
 
+  def add_to_basket
+    if check_client_rights
+      puts current_user.basket.orders
+      puts 'puts'
+      lesson = Course.find(params[:course_id]).lessons.find(params[:id])
+      if current_user.basket.orders.where(lesson: lesson).empty?
+        Order.create(lesson: lesson, basket: current_user.basket)
+      end
+    end
+  end
+
   private
 
   	def set_lesson

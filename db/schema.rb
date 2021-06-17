@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_06_05_180044) do
+ActiveRecord::Schema.define(version: 2021_06_17_172002) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -45,10 +45,8 @@ ActiveRecord::Schema.define(version: 2021_06_05_180044) do
 
   create_table "baskets", force: :cascade do |t|
     t.bigint "user_id", null: false
-    t.bigint "lessons_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["lessons_id"], name: "index_baskets_on_lessons_id"
     t.index ["user_id"], name: "index_baskets_on_user_id"
   end
 
@@ -61,7 +59,7 @@ ActiveRecord::Schema.define(version: 2021_06_05_180044) do
 
   create_table "chat_visits", force: :cascade do |t|
     t.bigint "chat_id", null: false
-    t.datetime "last_visit", default: "2021-06-05 18:06:22"
+    t.datetime "last_visit", default: "2021-06-17 18:57:05"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["chat_id"], name: "index_chat_visits_on_chat_id"
@@ -166,7 +164,7 @@ ActiveRecord::Schema.define(version: 2021_06_05_180044) do
   create_table "homeworks", force: :cascade do |t|
     t.bigint "lesson_id", null: false
     t.text "text", default: ""
-    t.datetime "time_to_complete", default: "2021-06-05 18:06:19"
+    t.datetime "time_to_complete", default: "2021-06-17 18:57:02"
     t.string "type", default: "common"
     t.string "category_of_work", default: "testing"
     t.boolean "has_score", default: false
@@ -198,6 +196,15 @@ ActiveRecord::Schema.define(version: 2021_06_05_180044) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["chat_id"], name: "index_messages_on_chat_id"
     t.index ["sender_id"], name: "index_messages_on_sender_id"
+  end
+
+  create_table "orders", force: :cascade do |t|
+    t.bigint "lesson_id", null: false
+    t.bigint "basket_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["basket_id"], name: "index_orders_on_basket_id"
+    t.index ["lesson_id"], name: "index_orders_on_lesson_id"
   end
 
   create_table "paid_lessons", force: :cascade do |t|
@@ -289,7 +296,6 @@ ActiveRecord::Schema.define(version: 2021_06_05_180044) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
-  add_foreign_key "baskets", "lessons", column: "lessons_id"
   add_foreign_key "baskets", "users"
   add_foreign_key "chat_visits", "chats"
   add_foreign_key "chats", "users", column: "first_interlocutor_id"
@@ -313,6 +319,8 @@ ActiveRecord::Schema.define(version: 2021_06_05_180044) do
   add_foreign_key "lessons", "courses"
   add_foreign_key "messages", "chats"
   add_foreign_key "messages", "users", column: "sender_id"
+  add_foreign_key "orders", "baskets"
+  add_foreign_key "orders", "lessons"
   add_foreign_key "paid_lessons", "checks"
   add_foreign_key "paid_lessons", "lessons"
   add_foreign_key "paid_lessons", "users"
