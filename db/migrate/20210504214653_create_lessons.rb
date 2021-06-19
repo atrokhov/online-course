@@ -8,6 +8,7 @@ class CreateLessons < ActiveRecord::Migration[6.1]
       t.string :files, default: ""
       t.string :name, default: ""
       t.decimal :price, default: 0.0
+      t.integer :currency, default: 0
       t.boolean :active, default: false
 
       t.timestamps

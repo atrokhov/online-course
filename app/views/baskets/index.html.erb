@@ -6,18 +6,22 @@
 			<tr>
 				<th>Lesson</th>
 				<th>Price</th>
+				<th>Delete from cart</th>
 			</tr>
 		</thead>
 		<tbody>
 			<% @orders.each do |order| %>
 			<tr class="line">
-				<td><%= order.lesson.name %></td>
+				<td><%= link_to order.lesson.name, category_course_lesson_path(order.lesson.course.category_id, order.lesson.course_id, order.lesson) %></td>
 				<td><%= order.lesson.price %></td>
+				<td><%= link_to 'Delete', category_course_delete_from_basket_path(order.lesson.course.category_id, order.lesson.course_id, order.lesson), method: :delete, data: { confirm: 'Are you sure?' } %></td>
 			</tr>
 			<% end %>
 			<tr></tr>
 		</tbody>
 		<p>Total: <%= @total %></p>
+
+		<%= link_to 'Buy all', buy_lessons_path, method: :post %>
 	</table>
 
 <% else %>

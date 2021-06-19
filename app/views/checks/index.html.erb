@@ -1,0 +1,7 @@
+<h1>Checks</h1>
+
+<% @checks.each do |check| %>
+	<p><%= check.customer %></p>
+	<p><%= check.sum %> <%= check.currency %></p>
+	<p>-------------------------</p>
+<% end %>

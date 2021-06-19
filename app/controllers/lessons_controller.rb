@@ -57,18 +57,52 @@ class LessonsController < ApplicationController
           format.html { redirect_to category_course_lesson_path(lesson.course.category_id, lesson.course_id, lesson), notice: "Lesson was successfully activated." }
         end
       else
-        redirect_to courses_url, status: :found, alert: "You don't have enough rights"
+        redirect_to category_course_lesson_path(lesson.course.category_id, lesson.course_id, lesson), status: :found, alert: "You don't have enough rights"
       end
     end
   end
 
   def add_to_basket
     if check_client_rights
-      puts current_user.basket.orders
-      puts 'puts'
       lesson = Course.find(params[:course_id]).lessons.find(params[:id])
-      if current_user.basket.orders.where(lesson: lesson).empty?
-        Order.create(lesson: lesson, basket: current_user.basket)
+      if PaidLesson.where(lesson: lesson, user: current_user).empty?
+        if current_user.basket.orders.where(lesson: lesson).empty?
+          Order.create(lesson: lesson, basket: current_user.basket)
+          respond_to do |format|
+            format.html { redirect_to category_course_lesson_path(lesson.course.category_id, lesson.course_id, lesson), notice: "Lesson was successfully added to cart." }
+          end
+        else
+          redirect_to category_course_lesson_path(lesson.course.category_id, lesson.course_id, lesson), status: :found, alert: "You already added this lesson to cart"
+        end
+      else
+        redirect_to category_course_lesson_path(lesson.course.category_id, lesson.course_id, lesson), status: :found, alert: "You already bought this lesson"
+      end
+    end
+  end
+
+  def delete_from_basket
+    if check_client_rights
+      lesson = Course.find(params[:course_id]).lessons.find(params[:id])
+      order = current_user.basket.orders.where(lesson: lesson)
+      if !order.empty?
+        order.first.destroy
+        respond_to do |format|
+          format.html { redirect_to baskets_index_path, notice: "Lesson was successfully deleted from cart." }
+        end
+      else
+        redirect_to category_course_lesson_path(lesson.course.category_id, lesson.course_id, lesson), status: :found, alert: "Nothing to delete from cart"
+      end
+    end
+  end
+
+  def buy
+    if check_client_rights
+      lesson = Course.find(params[:course_id]).lessons.find(params[:id])
+      if PaidLesson.where(lesson: lesson, user: current_user).empty?
+        check = Check.create(sum: lesson.price, customer: SecureRandom.hex(16))
+        paid_lesson = PaidLesson.create(check: check, lesson: lesson, user: current_user)
+      else
+        redirect_to category_course_lesson_path(lesson.course.category_id, lesson.course_id, lesson), status: :found, alert: "You already bought this lesson"
       end
     end
   end

@@ -20,7 +20,7 @@
 
 <p>
   <strong>Price:</strong>
-  <%= @lesson.price %>
+  <%= @lesson.price %> <%= @lesson.currency %>
 </p>
 
 <p>
@@ -36,7 +36,8 @@
 <% end %>
 </p>
 
-<%= link_to 'Add to cart', category_course_add_to_basket_path(@lesson), method: :patch %>
+<%= link_to 'Add to cart', category_course_add_to_basket_path(@lesson), method: :post %>
+<%= link_to 'Buy', category_course_buy_lesson_path(@lesson), method: :post %>
 
 <% if user_signed_in? and current_user.superuser? %>
 	<%= link_to 'Edit', edit_category_course_lesson_path(@lesson.course.category_id, @lesson.course_id, @lesson) %> |

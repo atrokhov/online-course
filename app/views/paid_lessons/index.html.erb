@@ -1,0 +1,5 @@
+<h1>Paid lessons</h1>
+
+<% @paid_lessons.each do |paid_lesson| %>
+	<p><%= link_to paid_lesson.lesson.name, category_course_lesson_path(paid_lesson.lesson.course.category_id, paid_lesson.lesson.course_id, paid_lesson.lesson) %></p>
+<% end %>

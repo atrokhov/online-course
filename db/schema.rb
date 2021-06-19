@@ -59,7 +59,7 @@ ActiveRecord::Schema.define(version: 2021_06_17_172002) do
 
   create_table "chat_visits", force: :cascade do |t|
     t.bigint "chat_id", null: false
-    t.datetime "last_visit", default: "2021-06-17 18:57:05"
+    t.datetime "last_visit", default: "2021-06-19 18:57:09"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["chat_id"], name: "index_chat_visits_on_chat_id"
@@ -76,6 +76,7 @@ ActiveRecord::Schema.define(version: 2021_06_17_172002) do
 
   create_table "checks", force: :cascade do |t|
     t.decimal "sum", default: "0.0"
+    t.integer "currency", default: 0
     t.string "customer", default: ""
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -164,7 +165,7 @@ ActiveRecord::Schema.define(version: 2021_06_17_172002) do
   create_table "homeworks", force: :cascade do |t|
     t.bigint "lesson_id", null: false
     t.text "text", default: ""
-    t.datetime "time_to_complete", default: "2021-06-17 18:57:02"
+    t.datetime "time_to_complete", default: "2021-06-19 18:57:06"
     t.string "type", default: "common"
     t.string "category_of_work", default: "testing"
     t.boolean "has_score", default: false
@@ -181,6 +182,7 @@ ActiveRecord::Schema.define(version: 2021_06_17_172002) do
     t.string "files", default: ""
     t.string "name", default: ""
     t.decimal "price", default: "0.0"
+    t.integer "currency", default: 0
     t.boolean "active", default: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
