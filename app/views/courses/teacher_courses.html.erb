@@ -3,17 +3,13 @@
 	<% @courses.each do |course| %>
 	<div>
 		<p><%= course.name %></p>
-		<%= link_to 'Show', course %>
-		<% if user_signed_in? and current_user.superuser? %>
-		    | <%= link_to 'Edit', edit_course_path(course) %> |
-		    <%= link_to 'Destroy', course, method: :delete, data: { confirm: 'Are you sure?' } %>
-		<% end %>
+		<%= link_to 'Show', category_course_path(course.category_id, course) %>
+		| <%= link_to 'Edit', edit_category_course_path(course.category_id, course) %> |
+		<%= link_to 'Destroy', category_course_path(course.category_id, course), method: :delete, data: { confirm: 'Are you sure?' } %>
 	</div>
 	<% end %>
 <% else %>
 	<p>Doesn't anything here</p>
 <% end %>
 
-<% if user_signed_in? and current_user.superuser? %>
-	<p><%= link_to 'New course', new_course_path %></p>
-<% end %>
+<p><%= link_to 'New course', new_category_course_path(@category_id) %></p>

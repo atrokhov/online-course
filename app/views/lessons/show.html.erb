@@ -36,6 +36,18 @@
 <% end %>
 </p>
 
+<%= video_tag url_for(@lesson.video), size: "320x240", controls: true %> <br>
+
+<details>
+  <summary>Files</summary>
+  <% @lesson.files.each do |file| %>
+    <p>
+      <%= link_to file.filename ,rails_blob_path(file, disposition: "attachment") %>
+    </p>
+  <% end %>
+
+</details>
+
 <%= link_to 'Add to cart', category_course_add_to_basket_path(@lesson), method: :post %>
 <%= link_to 'Buy', category_course_buy_lesson_path(@lesson), method: :post %>
 

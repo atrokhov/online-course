@@ -2,10 +2,16 @@ class LessonsController < ApplicationController
 	before_action :set_lesson, only: %i[ show edit update destroy ]
 
   def index
+    course = Course.find(params[:course_id])
   	if check_superuser_rights
-  		@lessons = Course.find(params[:course_id]).lessons
+  		@lessons = course.lessons
+      @course = course
+    elsif check_teacher_rights and course.teacher_id == current_user.id
+      @lessons = course.lessons
+      @course = course
   	else
-  		@lessons = Course.find(params[:course_id]).lessons.where active: true
+  		@lessons = course.lessons.where active: true
+      @course = course
   	end
   end
 
@@ -21,6 +27,9 @@ class LessonsController < ApplicationController
 
   def create
   	@lesson = Course.find(params[:course_id]).lessons.build(lessons_params)
+    if @lesson.free == true
+      @lesson.price = 0
+    end
   	respond_to do |format|
       if @lesson.save
         format.html { redirect_to category_course_lesson_path(@lesson.course.category_id, @lesson.course_id, @lesson), notice: "Lesson was successfully created." }
@@ -41,6 +50,8 @@ class LessonsController < ApplicationController
   end
 
   def destroy
+    @lesson.video.purge
+    @lesson.files.purge
   	@lesson.destroy
     respond_to do |format|
       format.html { redirect_to category_course_lessons_path, notice: "Lesson was successfully destroyed." }
@@ -101,6 +112,9 @@ class LessonsController < ApplicationController
       if PaidLesson.where(lesson: lesson, user: current_user).empty?
         check = Check.create(sum: lesson.price, customer: SecureRandom.hex(16))
         paid_lesson = PaidLesson.create(check: check, lesson: lesson, user: current_user)
+        respond_to do |format|
+            format.html { redirect_to category_course_lesson_path(lesson.course.category_id, lesson.course_id, lesson), notice: "Lesson was successfully bought." }
+          end
       else
         redirect_to category_course_lesson_path(lesson.course.category_id, lesson.course_id, lesson), status: :found, alert: "You already bought this lesson"
       end
@@ -119,7 +133,7 @@ class LessonsController < ApplicationController
     end
 
   	def lessons_params
-      params.require(:lesson).permit(:course_id, :free, :name, :text, :price, :active, :video, :files)
+      params.require(:lesson).permit(:course_id, :free, :name, :text, :price, :currency, :active, :video, files: [])
     end
 
     def check_active(lesson)

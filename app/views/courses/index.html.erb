@@ -14,6 +14,6 @@
 	<p>Doesn't anything here</p>
 <% end %>
 
-<% if user_signed_in? and current_user.superuser? %>
-	<p><%= link_to 'New course', new_category_course_path %></p>
+<% if (user_signed_in? and current_user.superuser?) or (user_signed_in? and current_user.teacher?) %>
+	<p><%= link_to 'New course', new_category_course_path(@category_id) %></p>
 <% end %>

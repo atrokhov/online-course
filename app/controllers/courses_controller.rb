@@ -5,14 +5,20 @@ class CoursesController < ApplicationController
   def index
     if user_signed_in? and current_user.superuser?
   	  @courses = Category.find(params[:category_id]).courses
+      @category_id = params[:category_id]
+    elsif user_signed_in? and current_user.teacher?
+      @courses = Category.find(params[:category_id]).courses.where(teacher_id: current_user.id)
+      @category_id = params[:category_id]
     else
       @courses = Category.find(params[:category_id]).courses.where(active: true)
+      @category_id = params[:category_id]
     end
   end
 
   def teacher_courses
     if current_user.teacher?
       @courses = Course.where(teacher_id: current_user.id)
+      @category_id = params[:category_id]
     else
       redirect_to courses_url, status: :found, alert: "You are not a teacher"
     end
@@ -23,7 +29,7 @@ class CoursesController < ApplicationController
   end
 
   def new
-  	check_rights do
+  	if user_signed_in? and (current_user.superuser? or current_user.teacher?)
   		@course = Category.find(params[:category_id]).courses.build
 	  end
   end
@@ -32,7 +38,7 @@ class CoursesController < ApplicationController
   end
 
   def create
-  	check_rights do
+  	if user_signed_in? and (current_user.superuser? or current_user.teacher?)
 	  	@course = Category.find(params[:category_id]).courses.build(courses_params)
 
 	  	respond_to do |format|
@@ -58,7 +64,7 @@ class CoursesController < ApplicationController
   def destroy
     @course.destroy
     respond_to do |format|
-      format.html { redirect_to category_courses_url, notice: "Course was successfully destroyed." }
+      format.html { redirect_to category_courses_url(course.category_id), notice: "Course was successfully destroyed." }
     end
   end
 
@@ -72,7 +78,7 @@ class CoursesController < ApplicationController
           format.html { redirect_to category_course_path(course.category_id, course), notice: "Course was successfully activated." }
         end
       else
-        redirect_to courses_url, status: :found, alert: "You don't have enough rights"
+        redirect_to category_courses_url(course.category_id), status: :found, alert: "You don't have enough rights"
       end
     end
   end
@@ -80,20 +86,17 @@ class CoursesController < ApplicationController
   private
 
 	  def set_course
-	  	check_rights do
-	    	@course = Category.find(params[:category_id]).courses.find(params[:id])
+	  	if user_signed_in? and (current_user.superuser? or current_user.teacher?)
+	    	course = Category.find(params[:category_id]).courses.find(params[:id])
+        if course.teacher_id == current_user.id or current_user.superuser?
+          @course = course
+        else
+          redirect_to category_courses_url(course.category_id), status: :found, alert: "You don't have enough rights"
+        end
 		  end
 	  end
 
   	def courses_params
       params.require(:course).permit(:category_id, :name, :description, :active, :teacher_id)
-    end
-
-    def check_rights
-      if user_signed_in? and current_user.superuser?
-        yield
-      else
-        redirect_to courses_url, status: :found, alert: "You don't have enough rights"
-      end
     end
 end

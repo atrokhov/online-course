@@ -31,6 +31,21 @@
     <%= form.number_field :price %>
   </div>
 
+  <div class="field">
+    <%= form.label :currency %>
+    <%= form.select :currency, Lesson.currencies.keys.map { |w| [w, w] } %>
+  </div>
+
+  <div class="field">
+    <%= form.label :video %>
+    <%= form.file_field :video %>
+  </div>
+
+  <div class="field">
+    <%= form.label :files %>
+    <%= form.file_field :files, :multiple => true %>
+  </div>
+
   <div class="actions">
     <%= form.submit %>
   </div>

@@ -4,7 +4,7 @@
 	<div>
 		<p><%= lesson.name %></p>
 		<%= link_to 'Show', category_course_lesson_path(lesson.course.category_id, lesson.course_id, lesson) %>
-		<% if user_signed_in? and current_user.superuser? %>
+		<% if user_signed_in? and (current_user.superuser? or (current_user.teacher? and lesson.course.teacher_id == current_user.id)) %>
 		    | <%= link_to 'Edit', edit_category_course_lesson_path(lesson.course.category_id, lesson.course_id, lesson) %> |
 		    <%= link_to 'Destroy', category_course_lesson_path(lesson.course.category_id, lesson.course_id, lesson), method: :delete, data: { confirm: 'Are you sure?' } %>
 		<% end %>
@@ -14,6 +14,6 @@
 	<p>Doesn't anything here</p>
 <% end %>
 
-<% if user_signed_in? and current_user.superuser? %>
+<% if user_signed_in? and (current_user.superuser? or (current_user.teacher? and @course.teacher_id == current_user.id)) %>
 	<p><%= link_to 'New lesson', new_category_course_lesson_path %></p>
 <% end %>
