@@ -40,6 +40,9 @@ class CoursesController < ApplicationController
   def create
   	if user_signed_in? and (current_user.superuser? or current_user.teacher?)
 	  	@course = Category.find(params[:category_id]).courses.build(courses_params)
+      if current_user.teacher?
+        @course.teacher = current_user
+      end
 
 	  	respond_to do |format|
 	      if @course.save
