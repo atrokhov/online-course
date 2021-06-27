@@ -1,0 +1,51 @@
+superuser:
+  email: "superuser@course.com"
+  first_name: "superuser"
+  last_name: "superuser"
+  role: 3
+
+client1:
+  email: "client1@course.com"
+  first_name: "client1"
+  last_name: "client1"
+
+client2:
+  email: "client2@course.com"
+  first_name: "client2"
+  last_name: "client2"
+
+teacher1:
+  email: "teacher1@course.com"
+  first_name: "teacher1"
+  last_name: "teacher1"
+  role: 4
+
+teacher2:
+  email: "teacher2@course.com"
+  first_name: "teacher2"
+  last_name: "teacher2"
+  role: 4
+
+admin1:
+  email: "admin1@course.com"
+  first_name: "admin1"
+  last_name: "admin1"
+  role: 0
+
+admin2:
+  email: "admin2@course.com"
+  first_name: "admin2"
+  last_name: "admin2"
+  role: 0
+
+manager1:
+  email: "manager1@course.com"
+  first_name: "manager1"
+  last_name: "manager1"
+  role: 2
+
+manager2:
+  email: "manager2@course.com"
+  first_name: "manager2"
+  last_name: "manager2"
+  role: 2

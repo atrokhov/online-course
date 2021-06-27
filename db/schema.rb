@@ -59,7 +59,7 @@ ActiveRecord::Schema.define(version: 2021_06_17_172002) do
 
   create_table "chat_visits", force: :cascade do |t|
     t.bigint "chat_id", null: false
-    t.datetime "last_visit", default: "2021-06-26 17:21:45"
+    t.datetime "last_visit", default: "2021-06-27 21:43:22"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["chat_id"], name: "index_chat_visits_on_chat_id"
@@ -165,7 +165,7 @@ ActiveRecord::Schema.define(version: 2021_06_17_172002) do
   create_table "homeworks", force: :cascade do |t|
     t.bigint "lesson_id", null: false
     t.text "text", default: ""
-    t.datetime "time_to_complete", default: "2021-06-26 17:21:42"
+    t.datetime "time_to_complete", default: "2021-06-27 21:43:19"
     t.string "type", default: "common"
     t.string "category_of_work", default: "testing"
     t.boolean "has_score", default: false
@@ -298,7 +298,7 @@ ActiveRecord::Schema.define(version: 2021_06_17_172002) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
-  add_foreign_key "baskets", "users"
+  add_foreign_key "baskets", "users", on_delete: :cascade
   add_foreign_key "chat_visits", "chats"
   add_foreign_key "chats", "users", column: "first_interlocutor_id"
   add_foreign_key "chats", "users", column: "second_interlocutor_id"
@@ -321,7 +321,7 @@ ActiveRecord::Schema.define(version: 2021_06_17_172002) do
   add_foreign_key "lessons", "courses"
   add_foreign_key "messages", "chats"
   add_foreign_key "messages", "users", column: "sender_id"
-  add_foreign_key "orders", "baskets"
+  add_foreign_key "orders", "baskets", on_delete: :cascade
   add_foreign_key "orders", "lessons"
   add_foreign_key "paid_lessons", "checks"
   add_foreign_key "paid_lessons", "lessons"

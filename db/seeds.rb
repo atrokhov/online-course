@@ -33,6 +33,14 @@ lesson3 = Lesson.create(course: course3, name: "Lesson 3", active: true, price: 
 
 check = Check.create(sum: lesson1.price, customer: SecureRandom.hex(16))
 
-basket = Basket.create(user: client1)
+basket1 = Basket.create(user: client1)
+basket2 = Basket.create(user: client2)
+basket3 = Basket.create(user: manager1)
+basket4 = Basket.create(user: manager2)
+basket5 = Basket.create(user: admin1)
+basket6 = Basket.create(user: admin2)
+basket7 = Basket.create(user: teacher1)
+basket8 = Basket.create(user: teacher2)
+basket9 = Basket.create(user: su)
 
 paid_lesson = PaidLesson.create(check: check, user_id: client1.id, lesson: lesson1)
