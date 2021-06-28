@@ -25,7 +25,16 @@ class CoursesController < ApplicationController
   end
 
   def show
-  	@course = Category.find(params[:category_id]).courses.find(params[:id])
+  	course = Category.find(params[:category_id]).courses.find(params[:id])
+    if course.active?
+      @course = course 
+    elsif user_signed_in? and (current_user.superuser? or current_user.teacher?)
+      if course.teacher_id == current_user.id or current_user.superuser?
+        @course = course
+      end
+    else
+      redirect_to category_courses_url(course.category_id), status: :not_found, alert: "Not found"
+    end
   end
 
   def new

@@ -21,7 +21,7 @@ class BasketsController < ApplicationController
     end
 
     respond_to do |format|
-      format.html { redirect_to baskets_index_path, notice: "Lessons was successfully buyed." }
+      format.html { redirect_to cart_path, notice: "Lessons was successfully buyed." }
     end
   end
 end

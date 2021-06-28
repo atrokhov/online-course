@@ -36,7 +36,9 @@
 <% end %>
 </p>
 
-<%= video_tag url_for(@lesson.video), size: "320x240", controls: true %> <br>
+<% if @lesson.video.attached? %>
+  <%= video_tag url_for(@lesson.video), size: "320x240", controls: true %> <br>
+<% end %>
 
 <details>
   <summary>Files</summary>

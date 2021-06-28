@@ -98,7 +98,7 @@ class LessonsController < ApplicationController
       if !order.empty?
         order.first.destroy
         respond_to do |format|
-          format.html { redirect_to baskets_index_path, notice: "Lesson was successfully deleted from cart." }
+          format.html { redirect_to cart_path, notice: "Lesson was successfully deleted from cart." }
         end
       else
         redirect_to category_course_lesson_path(lesson.course.category_id, lesson.course_id, lesson), status: :found, alert: "Nothing to delete from cart"

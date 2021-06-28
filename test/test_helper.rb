@@ -4,10 +4,21 @@ require "rails/test_help"
 
 class ActiveSupport::TestCase
   # Run tests in parallel with specified workers
-  parallelize(workers: :number_of_processors, with: :threads)
+  # parallelize(workers: :number_of_processors, with: :threads)
 
   # Setup all fixtures in test/fixtures/*.yml for all tests in alphabetical order.
   fixtures :all
 
   # Add more helper methods to be used by all tests here...
+
+  include Devise::Test::IntegrationHelpers
+  include Warden::Test::Helpers
+
+  def log_in(user)
+    if integration_test?
+      login_as(user)
+    else
+      sign_in(user)
+    end
+  end
 end
